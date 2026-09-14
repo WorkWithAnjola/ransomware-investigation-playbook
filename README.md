@@ -37,11 +37,6 @@ auditpol /set /subcategory:"Process Creation" /success:enable /failure:enable
 reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit" /v ProcessCreationIncludeCmdLine_Enabled /t REG_DWORD /d 1 /f
 ```
 
-<p align="center">
-  <img src="img/01_audit_policy_config.png" alt="Process Creation Auditing Configuration" width="700"/>
-</p>
-<p align="center"><em>Figure 1: Audit policy and registry configuration enabling command-line process creation logging.</em></p>
-
 ---
 
 ## Phase 2: Evidence Analysis & Artifact Scoping
@@ -57,18 +52,18 @@ Process Command Line: "C:\Windows\system32\cmd.exe" /c echo Simulating: vssadmin
 ```
 
 <p align="center">
-  <img src="img/02_eid4688_vss_tampering.png" alt="Event ID 4688 Shadow Copy Deletion Attempt" width="700"/>
+  <img src="01_event_4688_vssadmin.png" alt="Event ID 4688 Shadow Copy Deletion Attempt" width="700"/>
 </p>
-<p align="center"><em>Figure 2: Event ID 4688 capturing the simulated VSS tampering command line.</em></p>
+<p align="center"><em>Figure 1: Event ID 4688 capturing the simulated VSS tampering command line.</em></p>
 
 ### Artifact 2 — Encrypted Storage & Ransom Note Artifacts
 
 Inspection of the victim workspace confirmed active ransomware impact: business records were renamed with the target extension and accompanied by extortion metadata.
 
 <p align="center">
-  <img src="img/03_encrypted_files_ransom_note.png" alt="Encrypted Files and Ransom Note Artifacts" width="700"/>
+  <img src="02_ransomware_files_note.png" alt="Encrypted Files and Ransom Note Artifacts" width="700"/>
 </p>
-<p align="center"><em>Figure 3: Simulated workspace showing `.lockbit`-renamed files alongside the dropped ransom note.</em></p>
+<p align="center"><em>Figure 2: Simulated workspace showing `.lockbit`-renamed files alongside the dropped ransom note.</em></p>
 
 ---
 
@@ -94,6 +89,11 @@ $vssEvents = Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4688} -MaxEv
     Where-Object { $_.Message -match 'vssadmin' }
 Write-Host "[+] Suspicious Process Events (VSS Tampering EID 4688): $($vssEvents.Count)" -ForegroundColor Magenta
 ```
+
+<p align="center">
+  <img src="03_automated_triage_collector.png" alt="Automated Triage Collector Script Output" width="700"/>
+</p>
+<p align="center"><em>Figure 3: Triage collector output showing encrypted file counts, ransom note artifacts, and VSS tampering hits.</em></p>
 
 ---
 
@@ -154,6 +154,7 @@ level: high
 - Implement Attack Surface Reduction (ASR) rules blocking credential theft and LOLBin abuse.
 - Enforce Least Privilege access controls on backup infrastructures.
 
+---
 ---
 
 ## Strategic Recommendations & Hardening
