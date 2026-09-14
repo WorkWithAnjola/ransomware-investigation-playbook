@@ -156,12 +156,12 @@ level: high
 
 ---
 
-## Appendix: Simulation Workspace Cleanup
+## Strategic Recommendations & Hardening
 
-Once screenshots are captured and verified, remove the sacrificial test folder used for the simulation:
+To mitigate ransomware dwell time and prevent successful precursor staging, enterprise environments should enforce the following defensive controls:
 
-```powershell
-Remove-Item -Path "C:\Ransomware_Simulation" -Recurse -Force
-```
-
-> **Note:** If images are stored in an `img/` folder in the repo, keep the `img/` prefix on each filename in the `<img>` tags above. If they sit in the repo root instead, drop the prefix and update the paths accordingly.
+1. **Deploy Attack Surface Reduction (ASR) Rules:** Enable Windows Defender ASR rules specifically targeting `Block process creations originating from PSExec and WMI commands` and `Block executable files from running unless they meet a prevalence, age, or trusted list criterion`.
+2. **Implement Tamper-Resilient Volume Backups:** Transition from local Volume Shadow Copies (VSS) to immutable, air-gapped, or off-site cloud storage. Restrict `vssadmin.exe` execution permissions to dedicated domain administrative accounts via AppLocker/WDAC.
+3. **Enforce Least Privilege & Tiered Administration:** Prevent workstation users from maintaining local administrative rights. Ensure service accounts lack permissions to manipulate recovery binaries (`bcdedit`, `wbadmin`, `vssadmin`).
+4. **Mandate Constrained Language Mode (CLM):** Pair PowerShell Script Block Logging with CLM to block unapproved COM objects and .NET reflective invocations commonly used in pre-encryption staging.
+5. **Automate Endpoint Isolation:** Integrate SIEM detection alerts (such as the VSS deletion Sigma rule) directly into SOAR or EDR workflows to quarantine compromised endpoints within seconds of precursor detection.
