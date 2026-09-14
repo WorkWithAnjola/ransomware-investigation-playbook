@@ -41,7 +41,7 @@ reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit" /
 
 ## Phase 2: Evidence Analysis & Artifact Scoping
 
-### Artifact 1 — Inhibit System Recovery Telemetry (EID 4688)
+### Artifact 1 - Inhibit System Recovery Telemetry (EID 4688)
 
 Ransomware execution relies on deleting backup shadow copies to force ransom payment. Windows Security Event ID 4688 captured the exact parent process and command-line execution parameters:
 
@@ -56,7 +56,7 @@ Process Command Line: "C:\Windows\system32\cmd.exe" /c echo Simulating: vssadmin
 </p>
 <p align="center"><em>Figure 1: Event ID 4688 capturing the simulated VSS tampering command line.</em></p>
 
-### Artifact 2 — Encrypted Storage & Ransom Note Artifacts
+### Artifact 2 - Encrypted Storage & Ransom Note Artifacts
 
 Inspection of the victim workspace confirmed active ransomware impact: business records were renamed with the target extension and accompanied by extortion metadata.
 
