@@ -12,7 +12,7 @@
     target simulation/investigation path and to the Security event log.
 
 .NOTES
-    Author:  [Your Name]
+    Author:  [workwithanjy]
     Scope:   Read-only triage. Does not modify, quarantine, or delete files.
 #>
 
