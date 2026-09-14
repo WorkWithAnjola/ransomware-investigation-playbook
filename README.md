@@ -155,7 +155,6 @@ level: high
 - Enforce Least Privilege access controls on backup infrastructures.
 
 ---
----
 
 ## Strategic Recommendations & Hardening
 
